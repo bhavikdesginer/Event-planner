@@ -1,0 +1,42 @@
+# Flutter
+.dart_tool/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# FVM
+.fvm/
+.fvmrc
+
+# Android
+android/.gradle/
+android/app/build/
+android/local.properties
+
+# iOS
+ios/Pods/
+ios/Flutter/ephemeral/
+ios/Runner.xcworkspace/
+
+# Desktop
+linux/flutter/ephemeral/
+macos/Flutter/ephemeral/
+windows/flutter/ephemeral/
+
+# macOS junk
+.DS_Store
+__MACOSX/
+
+# Firebase (future)
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+
+# Secrets
+*.jks
+key.properties
+.env
