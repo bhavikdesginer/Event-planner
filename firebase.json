@@ -1,0 +1,29 @@
+{
+	"flutter": {
+		"platforms": {
+			"android": {
+				"default": {
+					"projectId": "fitnesstracker-b65e4",
+					"appId": "1:872045622743:android:eaf9f760456ceaf7b44792",
+					"fileOutput": "android/app/google-services.json"
+				}
+			},
+			"dart": {
+				"lib/firebase_options.dart": {
+					"projectId": "fitnesstracker-b65e4",
+					"configurations": {
+						"android": "1:872045622743:android:eaf9f760456ceaf7b44792",
+						"ios": "1:872045622743:ios:35349e528892ac9eb44792",
+						"macos": "1:872045622743:ios:26346ddc4074de4eb44792",
+						"web": "1:872045622743:web:0a7f7b8c7473433bb44792",
+						"windows": "1:872045622743:web:b43363d41e82ccd5b44792"
+					}
+				}
+			}
+		}
+	},
+	"firestore": {
+		"rules": "firestore.rules",
+		"indexes": "firestore.indexes.json"
+	}
+}

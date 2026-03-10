@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../helper/CommonFuctions.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/gender_options_widget.dart';
+import '../../helper/onboarding_data.dart'; 
 
 class EnterGenderPage extends StatefulWidget {
   const EnterGenderPage({super.key});
@@ -63,7 +64,7 @@ class _EnterGenderPageState extends State<EnterGenderPage> {
             const SizedBox(height: 40),
             ElevatedButton(
               onPressed: () {
-                print("Selected Gender: $selectedGender");
+                OnboardingData.gender = selectedGender;
                 Navigator.push(
                   context,
                   CommonFunctionClass.pageRouteBuilder(

@@ -7,7 +7,7 @@ import 'package:eventhub/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class NavPage extends StatefulWidget {
-  int index;
+  final int index;
 
   NavPage({super.key, required this.index});
 
@@ -16,6 +16,7 @@ class NavPage extends StatefulWidget {
 }
 
 class _NavPageState extends State<NavPage> {
+  late int _currentIndex;
 
   final List<Widget> pages = [
     const HomePage(),
@@ -25,16 +26,22 @@ class _NavPageState extends State<NavPage> {
     const ProfilePage(),
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.index;
+  }
+
   void onItemTapped(int index) {
     setState(() {
-      widget.index = index;
+      _currentIndex = index;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: pages[widget.index],
+      body: pages[_currentIndex],
       bottomNavigationBar: BottomAppBar(
         elevation: 10,
         child: Row(
@@ -46,7 +53,7 @@ class _NavPageState extends State<NavPage> {
                 decoration: BoxDecoration(
                   border: Border(
                       top: BorderSide(
-                          color: widget.index == 0
+                      color: _currentIndex == 0
                               ? AppTheme.colorPrimary
                               : Colors.transparent,
                           width: 2)),
@@ -58,14 +65,14 @@ class _NavPageState extends State<NavPage> {
                     children: [
                       Icon(
                         Icons.home_rounded,
-                        color: widget.index == 0
+                        color: _currentIndex == 0
                             ? AppTheme.colorPrimary
                             : Colors.grey,
                       ),
                       Text(
                         'Home',
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: widget.index == 0
+                            color: _currentIndex == 0
                                 ? AppTheme.colorPrimary
                                 : Colors.grey),
                       )
@@ -81,7 +88,7 @@ class _NavPageState extends State<NavPage> {
                 decoration: BoxDecoration(
                   border: Border(
                       top: BorderSide(
-                          color: widget.index == 1
+                          color: _currentIndex == 1
                               ? AppTheme.colorPrimary
                               : Colors.transparent,
                           width: 2)),
@@ -93,14 +100,14 @@ class _NavPageState extends State<NavPage> {
                     children: [
                       Icon(
                         Icons.location_on_rounded,
-                        color: widget.index == 1
+                        color: _currentIndex == 1
                             ? AppTheme.colorPrimary
                             : Colors.grey,
                       ),
                       Text(
                         'Explore',
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: widget.index == 1
+                            color: _currentIndex == 1
                                 ? AppTheme.colorPrimary
                                 : Colors.grey),
                       )
@@ -116,7 +123,7 @@ class _NavPageState extends State<NavPage> {
                 decoration: BoxDecoration(
                     border: Border(
                         top: BorderSide(
-                            color: widget.index == 2
+                            color: _currentIndex == 2
                                 ? AppTheme.colorPrimary
                                 : Colors.transparent,
                             width: 2))),
@@ -127,14 +134,14 @@ class _NavPageState extends State<NavPage> {
                     children: [
                       Icon(
                         Icons.favorite,
-                        color: widget.index == 2
+                        color: _currentIndex == 2
                             ? AppTheme.colorPrimary
                             : Colors.grey,
                       ),
                       Text(
                         'Favourite',
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: widget.index == 2
+                            color: _currentIndex == 2
                                 ? AppTheme.colorPrimary
                                 : Colors.grey),
                       )
@@ -150,7 +157,7 @@ class _NavPageState extends State<NavPage> {
                 decoration: BoxDecoration(
                     border: Border(
                         top: BorderSide(
-                            color: widget.index == 3
+                      color: _currentIndex == 3
                                 ? AppTheme.colorPrimary
                                 : Colors.transparent,
                             width: 2))),
@@ -161,14 +168,14 @@ class _NavPageState extends State<NavPage> {
                     children: [
                       Icon(
                         Icons.local_activity,
-                        color: widget.index == 3
+                        color: _currentIndex == 3
                             ? AppTheme.colorPrimary
                             : Colors.grey,
                       ),
                       Text(
                         'Ticket',
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: widget.index == 3
+                            color: _currentIndex == 3
                                 ? AppTheme.colorPrimary
                                 : Colors.grey),
                       )
@@ -184,7 +191,7 @@ class _NavPageState extends State<NavPage> {
                 decoration: BoxDecoration(
                     border: Border(
                         top: BorderSide(
-                            color: widget.index == 4
+                      color: _currentIndex == 4
                                 ? AppTheme.colorPrimary
                                 : Colors.transparent,
                             width: 2))),
@@ -195,14 +202,14 @@ class _NavPageState extends State<NavPage> {
                     children: [
                       Icon(
                         Icons.person,
-                        color: widget.index == 4
+                        color: _currentIndex == 4
                             ? AppTheme.colorPrimary
                             : Colors.grey,
                       ),
                       Text(
                         'Profile',
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: widget.index == 3
+                            color: _currentIndex == 4
                                 ? AppTheme.colorPrimary
                                 : Colors.grey),
                       )

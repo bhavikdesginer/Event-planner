@@ -1,7 +1,9 @@
 import 'package:eventhub/helper/CommonFuctions.dart';
-import 'package:eventhub/pages/home_page.dart';
-import 'package:eventhub/pages/login_flow/enter_your_location.dart';
+import 'package:eventhub/helper/LoadingDialog.dart';
+import 'package:eventhub/helper/onboarding_data.dart';
 import 'package:eventhub/pages/nav_page.dart';
+import 'package:eventhub/services/auth_service.dart';
+import 'package:eventhub/services/user_service.dart';
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 
@@ -13,6 +15,40 @@ class LocationAccessPage extends StatefulWidget {
 }
 
 class _LocationAccessPageState extends State<LocationAccessPage> {
+
+  final AuthService _auth = AuthService();
+  final UserService _userService = UserService();
+
+  // ── SAVE ALL ONBOARDING DATA TO FIRESTORE ─────────────
+  Future<void> _completeOnboarding(String location) async {
+    LoadingDialog.showLoadingDialog(context);
+    try {
+      final uid = _auth.currentUser!.uid;
+
+      await _userService.updateUser(uid, {
+        'gender': OnboardingData.gender,
+        'age': OnboardingData.age,
+        'interests': OnboardingData.interests,
+        'location': location,
+      });
+
+      if (!mounted) return;
+
+      OnboardingData.clear(); // ← clean up temp data
+
+      Navigator.pop(context); // close loader
+      Navigator.pushAndRemoveUntil(
+        context,
+        CommonFunctionClass.pageRouteBuilder(NavPage(index: 0)),
+        (route) => false, // ← clears entire back stack
+      );
+    } catch (e) {
+      if (!mounted) return;
+      Navigator.pop(context); // close loader
+      CommonFunctionClass.showSnackBar(e.toString(), context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,10 +62,13 @@ class _LocationAccessPageState extends State<LocationAccessPage> {
               padding: const EdgeInsets.all(35),
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppTheme.colorLightGrey
+                color: AppTheme.colorLightGrey,
               ),
-              child: const Icon(Icons.location_pin,color: AppTheme.colorPrimary,
-              size: 80),
+              child: const Icon(
+                Icons.location_pin,
+                color: AppTheme.colorPrimary,
+                size: 80,
+              ),
             ),
             const SizedBox(height: 40),
             Text(
@@ -49,13 +88,23 @@ class _LocationAccessPageState extends State<LocationAccessPage> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 40),
-            ElevatedButton(onPressed: (){
-              Navigator.push(context, CommonFunctionClass.pageRouteBuilder(NavPage(index: 0)));
-            }, child: const Text("Allow Location Access")),
+
+            // ← UPDATED: saves onboarding data then goes to NavPage
+            ElevatedButton(
+              onPressed: () => _completeOnboarding('Current Location'),
+              child: const Text("Allow Location Access"),
+            ),
+
             const SizedBox(height: 10),
-            TextButton(onPressed: (){
-              Navigator.push(context, CommonFunctionClass.pageRouteBuilder(const EnterYourLocation()));
-            }, child: const Text("Enter Location Manually",style: TextStyle(color: AppTheme.colorPrimary),))
+
+            // ← UPDATED: saves onboarding data then goes to manual location
+            TextButton(
+              onPressed: () => _completeOnboarding('Manual'),
+              child: const Text(
+                "Enter Location Manually",
+                style: TextStyle(color: AppTheme.colorPrimary),
+              ),
+            ),
           ],
         ),
       ),

@@ -1,14 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
 import 'CommonFuctions.dart';
-import 'LoadingDialog.dart';
 
 
 class DialogPageDialog extends StatelessWidget {
-  String title;
-  String subTitle;
+  final String title;
+  final String subTitle;
 
   DialogPageDialog(this.title, this.subTitle);
 
@@ -82,10 +80,10 @@ class DialogPageDialog extends StatelessWidget {
 }
 
 class CustomDialogPageDialog extends StatelessWidget {
-  String title;
-  String subTitle;
-  String yesBtn;
-  String noBtn;
+  final String title;
+  final String subTitle;
+  final String yesBtn;
+  final String noBtn;
 
   CustomDialogPageDialog(this.title, this.subTitle, this.yesBtn, this.noBtn);
 
@@ -161,11 +159,11 @@ class CustomDialogPageDialog extends StatelessWidget {
 }
 
 class ThreeBtnDialogPageDialog extends StatelessWidget {
-  String title;
-  String subTitle;
-  String firstBtn;
-  String secondBtn;
-  String thirdBtn;
+  final String title;
+  final String subTitle;
+  final String firstBtn;
+  final String secondBtn;
+  final String thirdBtn;
 
   ThreeBtnDialogPageDialog(
       this.title, this.subTitle, this.firstBtn, this.secondBtn, this.thirdBtn);
@@ -264,9 +262,9 @@ class ThreeBtnDialogPageDialog extends StatelessWidget {
 }
 
 class SingleButtonPageDialog extends StatelessWidget {
-  String title;
-  String subTitle;
-  String btnText;
+  final String title;
+  final String subTitle;
+  final String btnText;
 
   SingleButtonPageDialog(this.title, this.subTitle, this.btnText);
 
@@ -332,8 +330,8 @@ class SingleButtonPageDialog extends StatelessWidget {
 }
 
 class ErrorDialogPageDialog extends StatelessWidget {
-  String title;
-  String subTitle;
+  final String title;
+  final String subTitle;
 
   ErrorDialogPageDialog(this.title, this.subTitle);
 

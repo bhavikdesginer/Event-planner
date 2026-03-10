@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../helper/CommonFuctions.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/step_progress_bar.dart';
+import '../../helper/onboarding_data.dart';
 
 class EnterAgePage extends StatefulWidget {
   const EnterAgePage({super.key});
@@ -104,7 +105,9 @@ class _EnterAgePageState extends State<EnterAgePage> {
 
             const SizedBox(height: 40),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () 
+              {
+                OnboardingData.age = _selectedAge;
                 Navigator.push(
                   context,
                   CommonFunctionClass.pageRouteBuilder(

@@ -1,3 +1,4 @@
+import 'package:eventhub/helper/onboarding_data.dart';
 import 'package:eventhub/pages/location_access_page.dart';
 import 'package:flutter/material.dart';
 import '../../helper/CommonFuctions.dart';
@@ -100,13 +101,17 @@ class _SelectInterestsPageState extends State<SelectInterestsPage> {
 
             const SizedBox(height: 30),
             ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      CommonFunctionClass.pageRouteBuilder(
-                          const LocationAccessPage()));
-                },
-                child: const Text("Next")),
+  onPressed: () {
+    OnboardingData.interests = List<String>.from(selected); // ← ADD THIS
+    Navigator.push(
+      context,
+      CommonFunctionClass.pageRouteBuilder(
+        const LocationAccessPage(),
+      ),
+    );
+  },
+  child: const Text("Next"),
+),
           ],
         ),
       ),

@@ -9,9 +9,38 @@ build/
 *.iml
 .vscode/
 
+# Platform local files
+.gradle/
+android/app/build/
+local.properties
+Pods/
+ephemeral/
+Runner.xcworkspace/
+
+
 # FVM
 .fvm/
-.fvmrc
+
+# Logs and reports
+*.log
+coverage/
+
+# Flutter generated (iOS)
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/Generated.xcconfig
+ios/Flutter/ephemeral/
+
+# Android signing and local secrets
+*.keystore
+*.p12
+*.pem
+*.key
+*.pfx
+*.mobileprovision
+*.cer
+*.crt
+*.der
+*.csr
 
 # Android
 android/.gradle/
@@ -40,3 +69,25 @@ ios/Runner/GoogleService-Info.plist
 *.jks
 key.properties
 .env
+.env.*
+!.env.example
+
+# Firebase CLI logs
+firebase-debug.log*
+
+# Dart / Flutter cache
+.pub-cache/
+.pub/
+
+# Coverage reports
+coverage/
+
+# Generated plugin registrant
+lib/generated_plugin_registrant.dart
+
+# Temporary files
+*.tmp
+*.temp
+
+# OS files
+Thumbs.db

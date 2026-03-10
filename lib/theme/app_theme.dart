@@ -44,7 +44,7 @@ class AppTheme {
     chipTheme: CChipTheme.lightChipTheme,
     checkboxTheme: CChackboxTheme.lightCheckboxTheme,
     inputDecorationTheme: CTextFormFieldTheme.lightInputDecorationTheme,
-    bottomAppBarTheme: const BottomAppBarThemeData(
+    bottomAppBarTheme: const BottomAppBarTheme(
       color: Colors.white,
       height: 60,
       padding: EdgeInsets.zero

@@ -1,8 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:eventhub/services/auth_service.dart';
+import 'package:eventhub/services/user_service.dart';
+import 'package:eventhub/helper/CommonFuctions.dart';
+import 'package:eventhub/pages/login_flow/login_page.dart';
+import '../../models/user_model.dart';
 import 'your_profile_page.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  final AuthService _auth = AuthService();
+  final UserService _userService = UserService();
+  UserModel? _user;
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      final uid = _auth.currentUser?.uid;
+      if (uid != null) {
+        final user = await _userService.getUser(uid);
+        setState(() {
+          _user = user;
+          _loading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _loading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,10 +105,10 @@ class ProfilePage extends StatelessWidget {
 
             const SizedBox(height: 15),
 
-            /// NAME
-            const Text(
-              "Esther Howard",
-              style: TextStyle(
+            /// NAME - Load from Firebase
+            Text(
+              _loading ? "Loading..." : (_user?.name ?? "User"),
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -82,13 +120,17 @@ class ProfilePage extends StatelessWidget {
             ProfileMenuItem(
               icon: Icons.person_outline,
               title: "Your profile",
-              onTap: () {
-                Navigator.push(
+              onTap: () async {
+                final changed = await Navigator.push<bool>(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const YourProfilePage(),
+                    builder: (context) => YourProfilePage(user: _user),
                   ),
                 );
+
+                if (changed == true) {
+                  _loadUserData();
+                }
               },
             ),
             // const Divider(height: 1),
@@ -203,10 +245,21 @@ void showLogoutBottomSheet(BuildContext context) {
                 /// LOGOUT BUTTON
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       Navigator.pop(context);
-
-                      /// add logout logic here
+                      
+                      // Sign out from Firebase
+                      final authService = AuthService();
+                      await authService.signOut();
+                      
+                      // Navigate to login page and clear back stack
+                      if (context.mounted) {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          CommonFunctionClass.pageRouteBuilder(const LoginPage()),
+                          (route) => false,
+                        );
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.orange,
@@ -236,7 +289,7 @@ class ProfileMenuItem extends StatelessWidget {
   final String title;
   final VoidCallback? onTap;
 
-   ProfileMenuItem({
+  const ProfileMenuItem({
     super.key,
     required this.icon,
     required this.title,
