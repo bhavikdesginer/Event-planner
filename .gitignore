@@ -71,6 +71,8 @@ key.properties
 .env
 .env.*
 !.env.example
+.secrets/*
+!.secrets/firebase_keys.example.json
 
 # Firebase CLI logs
 firebase-debug.log*

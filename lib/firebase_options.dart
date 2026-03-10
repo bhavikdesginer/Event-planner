@@ -40,8 +40,9 @@ class DefaultFirebaseOptions {
     }
   }
 
+  // API keys are injected at build time to avoid committing sensitive literals.
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'REMOVEDSyDst4XQYX-VJfb1Ecr2tWfjeYIKCrAkYpw',
+    apiKey: String.fromEnvironment('FIREBASE_WEB_API_KEY'),
     appId: '1:872045622743:web:0a7f7b8c7473433bb44792',
     messagingSenderId: '872045622743',
     projectId: 'fitnesstracker-b65e4',
@@ -51,7 +52,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'REMOVEDSyA14d9IlLRF9Tzk4S888Bh71V8lWPU1CSQ',
+    apiKey: String.fromEnvironment('FIREBASE_ANDROID_API_KEY'),
     appId: '1:872045622743:android:eaf9f760456ceaf7b44792',
     messagingSenderId: '872045622743',
     projectId: 'fitnesstracker-b65e4',
@@ -59,7 +60,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'REMOVEDSyA5xFBzh_Hj3VU0kakSgMRxDgF4RR-QIfs',
+    apiKey: String.fromEnvironment('FIREBASE_IOS_API_KEY'),
     appId: '1:872045622743:ios:35349e528892ac9eb44792',
     messagingSenderId: '872045622743',
     projectId: 'fitnesstracker-b65e4',
@@ -70,7 +71,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'REMOVEDSyA5xFBzh_Hj3VU0kakSgMRxDgF4RR-QIfs',
+    apiKey: String.fromEnvironment('FIREBASE_MACOS_API_KEY'),
     appId: '1:872045622743:ios:26346ddc4074de4eb44792',
     messagingSenderId: '872045622743',
     projectId: 'fitnesstracker-b65e4',
@@ -81,7 +82,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'REMOVEDSyBGmRW4U2tnNLvkjYhybPmwtoG8ivxONVc',
+    apiKey: String.fromEnvironment('FIREBASE_WINDOWS_API_KEY'),
     appId: '1:872045622743:web:b43363d41e82ccd5b44792',
     messagingSenderId: '872045622743',
     projectId: 'fitnesstracker-b65e4',
