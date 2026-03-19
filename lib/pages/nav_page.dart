@@ -1,15 +1,15 @@
-import 'package:eventhub/pages/explore_page.dart';
-import 'package:eventhub/pages/favourite_page.dart';
+import 'package:eventhub/bookings/booking_page.dart';
+import 'package:eventhub/explore/explore_page.dart';
+import 'package:eventhub/favourites/favourite_page.dart';
 import 'package:eventhub/pages/home_page.dart';
 import 'package:eventhub/pages/profile_page.dart';
-import 'package:eventhub/pages/tickets_page.dart';
 import 'package:eventhub/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class NavPage extends StatefulWidget {
   final int index;
 
-  NavPage({super.key, required this.index});
+  const NavPage({super.key, required this.index});
 
   @override
   State<NavPage> createState() => _NavPageState();
@@ -18,207 +18,122 @@ class NavPage extends StatefulWidget {
 class _NavPageState extends State<NavPage> {
   late int _currentIndex;
 
-  final List<Widget> pages = [
-    const HomePage(),
-    const ExplorePage(),
-    const FavouritePage(),
-    const TicketsPage(),
-    const ProfilePage(),
-  ];
-
   @override
   void initState() {
     super.initState();
-    _currentIndex = widget.index;
+    _currentIndex = widget.index.clamp(0, 4).toInt();
   }
 
   void onItemTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
+    if (index < 0 || index > 4) return;
+    setState(() => _currentIndex = index);
+  }
+
+  // ── Build current page ───────────────────────────────────────
+  // ProfilePage — UniqueKey() so it ALWAYS rebuilds when tab is tapped
+  // Other pages — const so they stay alive (performance)
+  Widget get _currentPage {
+    switch (_currentIndex) {
+      case 0:
+        return const HomePage();
+      case 1:
+        return const ExplorePage();
+      case 2:
+        return const BookingPage();
+      case 3:
+        return const FavouritePage();
+      case 4:
+        // UniqueKey forces ProfilePage to rebuild fresh every time
+        return ProfilePage(key: UniqueKey());
+      default:
+        return const HomePage();
+    }
+  }
+
+  Widget _navItem({
+    required BuildContext context,
+    required int index,
+    required IconData icon,
+    required String label,
+  }) {
+    final selected = _currentIndex == index;
+
+    return Expanded(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              color: selected ? AppTheme.colorPrimary : Colors.transparent,
+              width: 2,
+            ),
+          ),
+        ),
+        child: InkWell(
+          onTap: () => onItemTapped(index),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                color: selected ? AppTheme.colorPrimary : Colors.grey,
+              ),
+              const SizedBox(height: 2),
+              Text(
+                label,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      color: selected ? AppTheme.colorPrimary : Colors.grey,
+                    ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: pages[_currentIndex],
+      body: _currentPage,
       bottomNavigationBar: BottomAppBar(
         elevation: 10,
-        child: Row(
-          children: [
-            Expanded(
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                height: double.infinity,
-                decoration: BoxDecoration(
-                  border: Border(
-                      top: BorderSide(
-                      color: _currentIndex == 0
-                              ? AppTheme.colorPrimary
-                              : Colors.transparent,
-                          width: 2)),
-                ),
-                child: InkWell(
-                  onTap: () => onItemTapped(0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.home_rounded,
-                        color: _currentIndex == 0
-                            ? AppTheme.colorPrimary
-                            : Colors.grey,
-                      ),
-                      Text(
-                        'Home',
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: _currentIndex == 0
-                                ? AppTheme.colorPrimary
-                                : Colors.grey),
-                      )
-                    ],
-                  ),
-                ),
+        child: SizedBox(
+          height: 64,
+          child: Row(
+            children: [
+              _navItem(
+                context: context,
+                index: 0,
+                icon: Icons.home_rounded,
+                label: 'Home',
               ),
-            ),
-            Expanded(
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                height: double.infinity,
-                decoration: BoxDecoration(
-                  border: Border(
-                      top: BorderSide(
-                          color: _currentIndex == 1
-                              ? AppTheme.colorPrimary
-                              : Colors.transparent,
-                          width: 2)),
-                ),
-                child: InkWell(
-                  onTap: () => onItemTapped(1),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.location_on_rounded,
-                        color: _currentIndex == 1
-                            ? AppTheme.colorPrimary
-                            : Colors.grey,
-                      ),
-                      Text(
-                        'Explore',
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: _currentIndex == 1
-                                ? AppTheme.colorPrimary
-                                : Colors.grey),
-                      )
-                    ],
-                  ),
-                ),
+              _navItem(
+                context: context,
+                index: 1,
+                icon: Icons.travel_explore_rounded,
+                label: 'Explore',
               ),
-            ),
-            Expanded(
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                height: double.infinity,
-                decoration: BoxDecoration(
-                    border: Border(
-                        top: BorderSide(
-                            color: _currentIndex == 2
-                                ? AppTheme.colorPrimary
-                                : Colors.transparent,
-                            width: 2))),
-                child: InkWell(
-                  onTap: () => onItemTapped(2),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.favorite,
-                        color: _currentIndex == 2
-                            ? AppTheme.colorPrimary
-                            : Colors.grey,
-                      ),
-                      Text(
-                        'Favourite',
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: _currentIndex == 2
-                                ? AppTheme.colorPrimary
-                                : Colors.grey),
-                      )
-                    ],
-                  ),
-                ),
+              _navItem(
+                context: context,
+                index: 2,
+                icon: Icons.calendar_month_rounded,
+                label: 'Booking',
               ),
-            ),
-            Expanded(
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                height: double.infinity,
-                decoration: BoxDecoration(
-                    border: Border(
-                        top: BorderSide(
-                      color: _currentIndex == 3
-                                ? AppTheme.colorPrimary
-                                : Colors.transparent,
-                            width: 2))),
-                child: InkWell(
-                  onTap: () => onItemTapped(3),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.local_activity,
-                        color: _currentIndex == 3
-                            ? AppTheme.colorPrimary
-                            : Colors.grey,
-                      ),
-                      Text(
-                        'Ticket',
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: _currentIndex == 3
-                                ? AppTheme.colorPrimary
-                                : Colors.grey),
-                      )
-                    ],
-                  ),
-                ),
+              _navItem(
+                context: context,
+                index: 3,
+                icon: Icons.favorite,
+                label: 'Favourite',
               ),
-            ),
-            Expanded(
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                height: double.infinity,
-                decoration: BoxDecoration(
-                    border: Border(
-                        top: BorderSide(
-                      color: _currentIndex == 4
-                                ? AppTheme.colorPrimary
-                                : Colors.transparent,
-                            width: 2))),
-                child: InkWell(
-                  onTap: () => onItemTapped(4),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.person,
-                        color: _currentIndex == 4
-                            ? AppTheme.colorPrimary
-                            : Colors.grey,
-                      ),
-                      Text(
-                        'Profile',
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: _currentIndex == 4
-                                ? AppTheme.colorPrimary
-                                : Colors.grey),
-                      )
-                    ],
-                  ),
-                ),
+              _navItem(
+                context: context,
+                index: 4,
+                icon: Icons.person,
+                label: 'Profile',
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

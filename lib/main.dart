@@ -5,9 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'firebase_options.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } on FirebaseException catch (e) {
+    if (e.code != 'duplicate-app') rethrow;
+    Firebase.app(); // use already initialized default app
+  }
+
   runApp(const MyApp());
 }
 
@@ -26,7 +35,7 @@ class MyApp extends StatelessWidget {
         title: 'EventHub',
         theme: AppTheme.lightThemeData,
         debugShowCheckedModeBanner: false,
-        home: const SplashPage()
+        home: const SplashPage(),
       ),
     );
   }

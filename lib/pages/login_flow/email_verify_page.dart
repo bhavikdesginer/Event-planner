@@ -1,4 +1,4 @@
-import 'package:eventhub/pages/login_flow/enter_gender_page.dart';
+import 'package:eventhub/pages/login_flow/enter_age_page.dart';
 import 'package:eventhub/widgets/otp_input.dart';
 import 'package:flutter/material.dart';
 import '../../helper/CommonFuctions.dart';
@@ -76,7 +76,7 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
       Navigator.pop(context); // close loader
       Navigator.push(
         context,
-        CommonFunctionClass.pageRouteBuilder(const EnterGenderPage()),
+        CommonFunctionClass.pageRouteBuilder(const EnterAgePage()),
       );
     } catch (e) {
       Navigator.pop(context); // close loader
@@ -164,11 +164,20 @@ class _EmailVerifyPageState extends State<EmailVerifyPage> {
 
             const SizedBox(height: 30),
 
-            // ← UPDATED: calls _verifyAndRegister
             ElevatedButton(
-              onPressed: _verifyAndRegister,
+              onPressed: () {
+            
+                /// TEMPORARY: skip OTP verification
+                Navigator.push(
+                  context,
+                  CommonFunctionClass.pageRouteBuilder(
+                    const EnterAgePage(),
+                  ),
+                );
+            
+              },
               child: const Text("Verify"),
-            ),
+            )
           ],
         ),
       ),

@@ -1,4 +1,5 @@
-import 'package:eventhub/pages/login_flow/enter_age_page.dart';
+import 'package:eventhub/location/location_access_page.dart';
+import 'package:eventhub/pages/login_flow/select_interests_page.dart';
 import 'package:eventhub/widgets/step_progress_bar.dart';
 import 'package:flutter/material.dart';
 import '../../helper/CommonFuctions.dart';
@@ -20,7 +21,7 @@ class _EnterGenderPageState extends State<EnterGenderPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const StepProgressBar(currentStep: 1, totalSteps: 3),
+        title: const StepProgressBar(currentStep: 2, totalSteps: 4),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -68,7 +69,7 @@ class _EnterGenderPageState extends State<EnterGenderPage> {
                 Navigator.push(
                   context,
                   CommonFunctionClass.pageRouteBuilder(
-                    const EnterAgePage(),
+                    const SelectInterestsPage(),
                   ),
                 );
               },

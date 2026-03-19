@@ -1,10 +1,14 @@
 import 'package:eventhub/helper/onboarding_data.dart';
-import 'package:eventhub/pages/location_access_page.dart';
+import 'package:eventhub/location/location_access_page.dart';
 import 'package:flutter/material.dart';
 import '../../helper/CommonFuctions.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/category_chip_widget.dart';
 import '../../widgets/step_progress_bar.dart';
+import 'package:eventhub/pages/nav_page.dart';
+import 'package:eventhub/services/auth_service.dart';
+import 'package:eventhub/services/user_service.dart';
+import 'package:eventhub/helper/LoadingDialog.dart';
 
 class SelectInterestsPage extends StatefulWidget {
   const SelectInterestsPage({super.key});
@@ -60,7 +64,7 @@ class _SelectInterestsPageState extends State<SelectInterestsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const StepProgressBar(currentStep: 3, totalSteps: 3),
+        title: const StepProgressBar(currentStep: 3, totalSteps: 4),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -101,17 +105,36 @@ class _SelectInterestsPageState extends State<SelectInterestsPage> {
 
             const SizedBox(height: 30),
             ElevatedButton(
-  onPressed: () {
-    OnboardingData.interests = List<String>.from(selected); // ← ADD THIS
-    Navigator.push(
-      context,
-      CommonFunctionClass.pageRouteBuilder(
-        const LocationAccessPage(),
-      ),
-    );
+  onPressed: () async {
+
+    OnboardingData.interests = List<String>.from(selected);
+
+    LoadingDialog.showLoadingDialog(context);
+
+    try {
+      final uid = AuthService().currentUser!.uid;
+
+      await UserService().updateUser(uid, {
+        'interests': OnboardingData.interests,
+        'age': OnboardingData.age,
+        'gender': OnboardingData.gender,
+      });
+
+      Navigator.pop(context);
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        CommonFunctionClass.pageRouteBuilder(const LocationAccessPage()),
+        (route) => false,
+      );
+
+    } catch (e) {
+      Navigator.pop(context);
+      CommonFunctionClass.showSnackBar(e.toString(), context);
+    }
   },
   child: const Text("Next"),
-),
+)
           ],
         ),
       ),

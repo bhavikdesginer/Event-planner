@@ -9,7 +9,7 @@ import '../../services/user_service.dart';
 import '../../helper/CommonFuctions.dart';
 import '../../helper/LoadingDialog.dart';
 import '../../helper/onboarding_data.dart';
-import 'enter_gender_page.dart';
+import 'email_verify_page.dart';
 import 'login_page.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -88,7 +88,7 @@ class _RegisterPageState extends State<RegisterPage> {
       Navigator.pop(context);
       Navigator.pushAndRemoveUntil(
         context,
-        CommonFunctionClass.pageRouteBuilder(const EnterGenderPage()),
+        CommonFunctionClass.pageRouteBuilder(const EmailVerifyPage()),
         (route) => false,
       );
     } catch (e) {
